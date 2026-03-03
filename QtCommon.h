@@ -1,3 +1,4 @@
+#pragma once
 #include "sv_common.h"
 
 #include <QString>
