@@ -9,4 +9,4 @@ target_include_directories(sv_qtcommon PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-target_link_libraries(sv_qtcommon PRIVATE sv_common)
+target_link_libraries(sv_qtcommon PRIVATE sv_common Qt6::Widgets Qt6::Core)
