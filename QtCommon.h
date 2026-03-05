@@ -5,6 +5,9 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
+#include <QLineEdit>
+#include <QSpinBox>
+
 SV_DECL_OPT(QString)
 SV_DECL_OPT(QJsonArray)
 
