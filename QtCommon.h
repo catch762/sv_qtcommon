@@ -47,3 +47,26 @@ inline bool qtTypeIsRegistered()
 {
     return qtTypeId<T>() != QMetaType::UnknownType;
 }
+
+template <typename T>
+inline bool qtTypeIsRegisteredAndNamed()
+{
+    return qtTypeIsRegistered<T>() && !qtTypeName<T>().isEmpty();
+}
+
+//we have to wrap it in array or object, this wraps in array
+inline QString jsonValueToString(const QJsonValue &value)
+{
+    QJsonArray myArray;
+    myArray.append(value);
+
+    QJsonDocument doc;
+    doc.setArray(myArray);
+
+    return doc.toJson(QJsonDocument::Indented);
+}
+
+inline QString qVariantInfo(const QVariant &var)
+{
+    return QString("QVariant[typeid=%1][typename=%2][tostring=%3]").arg(var.typeId()).arg(var.typeName()).arg(var.toString());
+}
