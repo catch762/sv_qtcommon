@@ -63,7 +63,7 @@ inline QString jsonValueToString(const QJsonValue &value)
     QJsonDocument doc;
     doc.setArray(myArray);
 
-    return doc.toJson(QJsonDocument::Indented);
+    return doc.toJson(QJsonDocument::Indented).trimmed();
 }
 
 inline QString qVariantInfo(const QVariant &var)
