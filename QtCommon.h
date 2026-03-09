@@ -25,16 +25,25 @@ inline QJsonArrayOpt jsonGetArrayOpt(const QJsonObject& json, const QString& key
     else return {};
 };
 
-//returns 0 if unregistered
+using QtTypeIndex = int;
+
+//returns QMetaType::UnknownType (0) if unregistered
 template <typename T>
-inline int qtTypeId()
+inline QtTypeIndex qtTypeId()
 {
     return QMetaType::fromType<T>().id();
 }
 
-//returns 0 if unregistered
+//returns "" if unregistered
 template <typename T>
 inline QString qtTypeName()
 {
     return QMetaType::fromType<T>().name();
+}
+
+//this is basic check, maybe name for this class is still not set even if id is obtainable
+template <typename T>
+inline bool qtTypeIsRegistered()
+{
+    return qtTypeId<T>() != QMetaType::UnknownType;
 }
