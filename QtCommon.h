@@ -7,6 +7,15 @@
 
 #include <QLineEdit>
 #include <QSpinBox>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QGridLayout>
+#include <QPushButton>
+#include <QLabel>
+#include <QLineEdit>
+#include <QSpinBox>
+#include <QComboBox>
+#include <QFrame>
 
 SV_DECL_OPT(QString)
 SV_DECL_OPT(QJsonArray)
