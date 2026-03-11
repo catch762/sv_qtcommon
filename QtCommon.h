@@ -19,6 +19,7 @@
 
 SV_DECL_OPT(QString)
 SV_DECL_OPT(QJsonArray)
+SV_DECL_OPT(QJsonObject)
 
 inline QStringOpt jsonGetStringOpt(const QJsonObject& json, const QString& key)
 {
@@ -26,6 +27,46 @@ inline QStringOpt jsonGetStringOpt(const QJsonObject& json, const QString& key)
     if (value.isString()) return value.toString();
     else return {};
 };
+
+inline QStringOpt jsonGetStringOptAndLogError(const QJsonObject& json, const QString& key, const QString& logErrorTextBegin)
+{
+    auto valueOpt = jsonGetStringOpt(json, key);
+    if (!valueOpt)
+    {
+        SV_ERROR(QString("%1: no string under key \"%2\"").arg(logErrorTextBegin).arg(key).toStdString());
+    }
+    return valueOpt;
+};
+
+inline doubleOpt jsonGetDoubleOpt(const QJsonObject& json, const QString& key)
+{
+    auto value = json[key];
+    if (value.isDouble()) return value.toDouble();
+    else return {};
+};
+
+inline doubleOpt jsonGetDoubleOptAndLogError(const QJsonObject& json, const QString& key, const QString& logErrorTextBegin)
+{
+    auto valueOpt = jsonGetDoubleOpt(json, key);
+    if (!valueOpt)
+    {
+        SV_ERROR(QString("%1: no double under key \"%2\"").arg(logErrorTextBegin).arg(key).toStdString());
+    }
+    return valueOpt;
+};
+
+inline QJsonObjectOpt jsonGetObjectOptAndLogError(const QJsonValue& json, const QString& logErrorTextBegin)
+{
+    if (json.isObject())
+    {
+        return json.toObject();
+    }
+    else
+    {
+        SV_ERROR(QString("%1: value is not an object").arg(logErrorTextBegin).toStdString());
+        return {};
+    }
+}
 
 inline QJsonArrayOpt jsonGetArrayOpt(const QJsonObject& json, const QString& key)
 {
