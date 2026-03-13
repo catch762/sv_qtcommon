@@ -16,64 +16,11 @@
 #include <QSpinBox>
 #include <QComboBox>
 #include <QFrame>
+#include <QSlider>
 
 SV_DECL_OPT(QString)
 SV_DECL_OPT(QJsonArray)
 SV_DECL_OPT(QJsonObject)
-
-inline QStringOpt jsonGetStringOpt(const QJsonObject& json, const QString& key)
-{
-    auto value = json[key];
-    if (value.isString()) return value.toString();
-    else return {};
-};
-
-inline QStringOpt jsonGetStringOptAndLogError(const QJsonObject& json, const QString& key, const QString& logErrorTextBegin)
-{
-    auto valueOpt = jsonGetStringOpt(json, key);
-    if (!valueOpt)
-    {
-        SV_ERROR(QString("%1: no string under key \"%2\"").arg(logErrorTextBegin).arg(key).toStdString());
-    }
-    return valueOpt;
-};
-
-inline doubleOpt jsonGetDoubleOpt(const QJsonObject& json, const QString& key)
-{
-    auto value = json[key];
-    if (value.isDouble()) return value.toDouble();
-    else return {};
-};
-
-inline doubleOpt jsonGetDoubleOptAndLogError(const QJsonObject& json, const QString& key, const QString& logErrorTextBegin)
-{
-    auto valueOpt = jsonGetDoubleOpt(json, key);
-    if (!valueOpt)
-    {
-        SV_ERROR(QString("%1: no double under key \"%2\"").arg(logErrorTextBegin).arg(key).toStdString());
-    }
-    return valueOpt;
-};
-
-inline QJsonObjectOpt jsonGetObjectOptAndLogError(const QJsonValue& json, const QString& logErrorTextBegin)
-{
-    if (json.isObject())
-    {
-        return json.toObject();
-    }
-    else
-    {
-        SV_ERROR(QString("%1: value is not an object").arg(logErrorTextBegin).toStdString());
-        return {};
-    }
-}
-
-inline QJsonArrayOpt jsonGetArrayOpt(const QJsonObject& json, const QString& key)
-{
-    auto value = json[key];
-    if (value.isArray()) return value.toArray();
-    else return {};
-};
 
 using QtTypeIndex = int;
 
@@ -119,4 +66,34 @@ inline QString jsonValueToString(const QJsonValue &value)
 inline QString qVariantInfo(const QVariant &var)
 {
     return QString("QVariant[typeid=%1][typename=%2][tostring=%3]").arg(var.typeId()).arg(var.typeName()).arg(var.toString());
+}
+
+inline double getSliderValue01(const QSlider* slider)
+{
+    if (!slider) return 0.0;
+    
+    int min = slider->minimum();
+    int max = slider->maximum();
+    int val = slider->value();
+    
+    if (min == max) return 0.0;
+    
+    return static_cast<double>(val - min) / (max - min);
+}
+
+inline void setSliderValue01(QSlider* slider, double value01)
+{
+    if (!slider) return;
+    value01 = std::clamp(value01, 0.0, 1.0);
+    
+    int min = slider->minimum();
+    int max = slider->maximum();
+    
+    if (min == max) {
+        slider->setValue(min);
+        return;
+    }
+    
+    int value = min + static_cast<int>(value01 * (max - min));
+    slider->setValue(value);
 }
