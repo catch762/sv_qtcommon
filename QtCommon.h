@@ -38,6 +38,11 @@ inline QString qtTypeName()
     return QMetaType::fromType<T>().name();
 }
 
+inline QString qtTypeName(int typeIndex)
+{
+    return QString::fromLatin1(QMetaType(typeIndex).name());
+}
+
 //this is basic check, maybe name for this class is still not set even if id is obtainable
 template <typename T>
 inline bool qtTypeIsRegistered()
@@ -49,6 +54,17 @@ template <typename T>
 inline bool qtTypeIsRegisteredAndNamed()
 {
     return qtTypeIsRegistered<T>() && !qtTypeName<T>().isEmpty();
+}
+
+template <typename T>
+inline QString qtTypeInfo()
+{
+    return QString("[type id=%1, name=%2]").arg(qtTypeId<T>()).arg(qtTypeName<T>());
+} 
+
+inline QString qtTypeInfo(QtTypeIndex typeIndex)
+{
+    return QString("[type id=%1, name=%2]").arg(typeIndex).arg(qtTypeName(typeIndex));
 }
 
 //we have to wrap it in array or object, this wraps in array
