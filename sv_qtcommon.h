@@ -14,3 +14,5 @@
 #include "sv_common.h"
 #include "QtCommon.h"
 #include "JsonUtils.h"
+
+#include "Widgets/HorizontalScrollAreaWidget.h"
