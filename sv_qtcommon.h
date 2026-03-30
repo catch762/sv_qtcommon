@@ -12,6 +12,7 @@
 //*******************************************************************************
 
 #include "sv_common.h"
+#include "StdFormattersForQt.h"
 #include "QtCommon.h"
 #include "JsonUtils.h"
 
