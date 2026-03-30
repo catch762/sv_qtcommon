@@ -57,7 +57,7 @@ HorizontalScrollAreaWidget::HorizontalScrollAreaWidget(QWidget *parent)
     //presetContainer->setFixedHeight(Height);
     presetLayout = new QHBoxLayout(presetContainer);
     presetLayout->setContentsMargins(0,0,0,0);
-    presetLayout->setSpacing(2);
+    presetLayout->setSpacing(0);
     
     for (int i = 0; i < 10; ++i) {
         QPushButton *btn = new QPushButton(QString("%1").arg(i), presetContainer);
