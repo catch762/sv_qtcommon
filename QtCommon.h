@@ -17,6 +17,7 @@
 #include <QComboBox>
 #include <QFrame>
 #include <QSlider>
+#include <QPointer>
 
 SV_DECL_OPT(QString)
 SV_DECL_OPT(QJsonArray)
@@ -54,6 +55,26 @@ template <typename T>
 inline bool qtTypeIsRegisteredAndNamed()
 {
     return qtTypeIsRegistered<T>() && !qtTypeName<T>().isEmpty();
+}
+
+template <typename T>
+inline bool canConvert(const QVariant &qVariant)
+{
+    return qVariant.canConvert(QMetaType::fromType<T>());
+}
+
+template <typename T>
+inline std::optional<T> getValueOpt(const QVariant &qVariant)
+{
+    if(canConvert<T>(qVariant)) return qVariant.value<T>();
+    else return {};
+}
+
+template <typename T>
+inline T getValueOr(const QVariant &qVariant, const T& defaultVal = {})
+{
+    if(canConvert<T>(qVariant)) return qVariant.value<T>();
+    else return defaultVal;
 }
 
 template <typename T>

@@ -22,6 +22,15 @@ template <> QJsonArray convertJsonValueToType<QJsonArray>(const QJsonValue &val)
 template <> QJsonObject convertJsonValueToType<QJsonObject>(const QJsonValue &val);
 
 template <typename T>
+std::optional<T> getFromJson(const QJsonObject& json, const QString& key)
+{
+    auto value = json[key];
+    if (jsonValueIsType<T>(value)) return convertJsonValueToType<T>(value);
+    return {};
+}
+
+
+template <typename T>
 std::optional<T> getFromJsonAndLogError(const QJsonObject& json, const QString& key, const QString& logErrorTextBegin = "JSON error")
 {
     auto value = json[key];
