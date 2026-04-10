@@ -55,6 +55,12 @@ std::optional<T> getFromJsonAndLogError(const QJsonObject& json, const QString& 
 }
 
 template <typename T>
+std::optional<T> convertJson(const QJsonValue &value)
+{
+    return jsonValueIsType<T>(value) ? convertJsonValueToType<T>(value) : std::optional<T>{};
+}
+
+template <typename T>
 std::optional<T> convertJsonAndLogError(const QJsonValue &value, const QString& logErrorTextBegin = "JSON error")
 {
     if (!jsonValueIsType<T>(value))
