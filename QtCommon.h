@@ -145,6 +145,12 @@ inline void setSliderValue11(QSlider* slider, double value11)
     setSliderValue01(slider, value11To01(value11));
 }
 
+inline void initLayoutSpacing(QLayout* layout, int margins = 0, int spacing = 0)
+{
+    layout->setContentsMargins(margins,margins,margins,margins);
+    layout->setSpacing(spacing);
+}
+
 inline QWidget* makePaletteDisplayWidget(QPalette palette) {
     auto widget = new QWidget();
     auto mainLayout = new QVBoxLayout(widget);
