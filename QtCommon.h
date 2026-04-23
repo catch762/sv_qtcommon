@@ -19,6 +19,8 @@
 #include <QSlider>
 #include <QPointer>
 #include <QScrollArea>
+#include <QKeyEvent>
+#include <QMouseEvent>
 
 SV_DECL_OPT(QString)
 SV_DECL_OPT(QJsonArray)
