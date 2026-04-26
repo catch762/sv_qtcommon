@@ -29,6 +29,12 @@ std::optional<T> getFromJson(const QJsonObject& json, const QString& key)
     return {};
 }
 
+template <typename T>
+std::optional<T> getFromJson(const QJsonObjectOpt& json, const QString& key)
+{
+    return json ? getFromJson<T>(*json, key) : std::optional<T>{};
+}
+
 
 template <typename T>
 std::optional<T> getFromJsonAndLogError(const QJsonObject& json, const QString& key, const QString& logErrorTextBegin = "JSON error")

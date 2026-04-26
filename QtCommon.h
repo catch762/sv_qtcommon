@@ -4,7 +4,7 @@
 #include <QString>
 #include <QJsonObject>
 #include <QJsonArray>
-
+#include <QFile>
 #include <QLineEdit>
 #include <QSpinBox>
 #include <QVBoxLayout>
@@ -257,3 +257,9 @@ inline QWidget* createThemeIconsWidget() {
 
     return widget;
 }
+
+//'WidgetT is indeed QWidget-derived, but is not just QWidget'
+template <typename WidgetT>
+concept IsConcreteWidget =
+    std::derived_from<std::decay_t<WidgetT>, QWidget> &&
+    !std::same_as    <std::decay_t<WidgetT>, QWidget>;
