@@ -25,8 +25,10 @@
 SV_DECL_OPT(QString)
 SV_DECL_OPT(QJsonArray)
 SV_DECL_OPT(QJsonObject)
+SV_DECL_OPT(QJsonValue)
 
 using QtTypeIndex = int;
+SV_DECL_OPT(QtTypeIndex);
 
 //returns QMetaType::UnknownType (0) if unregistered
 template <typename T>
@@ -89,18 +91,6 @@ inline QString qtTypeInfo()
 inline QString qtTypeInfo(QtTypeIndex typeIndex)
 {
     return QString("[type id=%1, name=%2]").arg(typeIndex).arg(qtTypeName(typeIndex));
-}
-
-//we have to wrap it in array or object, this wraps in array
-inline QString jsonValueToString(const QJsonValue &value)
-{
-    QJsonArray myArray;
-    myArray.append(value);
-
-    QJsonDocument doc;
-    doc.setArray(myArray);
-
-    return doc.toJson(QJsonDocument::Indented).trimmed();
 }
 
 inline QString qVariantInfo(const QVariant &var)

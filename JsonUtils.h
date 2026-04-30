@@ -79,3 +79,29 @@ std::optional<T> convertJsonAndLogError(const QJsonValue &value, const QString& 
 
     return convertJsonValueToType<T>(value);
 }
+
+//we have to wrap it in array or object, this wraps in array
+inline QString jsonValueToString(const QJsonValue &value)
+{
+    QJsonArray myArray;
+    myArray.append(value);
+
+    QJsonDocument doc;
+    doc.setArray(myArray);
+
+    return doc.toJson(QJsonDocument::Indented).trimmed();
+}
+
+inline QJsonArrayOpt jsonStringToArray(const QString& jsonString)
+{
+    QJsonDocument doc = QJsonDocument::fromJson(jsonString.toUtf8());
+    if (doc.isArray()) return doc.array();
+    else return {};
+}
+
+inline QJsonObjectOpt jsonStringToObject(const QString& jsonString)
+{
+    QJsonDocument doc = QJsonDocument::fromJson(jsonString.toUtf8());
+    if (doc.isObject()) return doc.object();
+    else return {};
+}
