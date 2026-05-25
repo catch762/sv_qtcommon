@@ -105,3 +105,27 @@ inline QJsonObjectOpt jsonStringToObject(const QString& jsonString)
     if (doc.isObject()) return doc.object();
     else return {};
 }
+
+inline QJsonValueOpt loadJsonFromFile(const QString& jsonFilePath)
+{
+    QFile file(jsonFilePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        SV_ERROR(std::format("Cant load JSON from [{}] because cant open file", jsonFilePath));
+        return {};
+    }
+
+    const QByteArray data = file.readAll();
+    file.close();
+
+    QJsonParseError error;
+    QJsonDocument doc = QJsonDocument::fromJson(data, &error);
+    if (error.error != QJsonParseError::NoError)
+    {
+        SV_ERROR(std::format("Cant load JSON from [{}] because parse error occured:", jsonFilePath, error.errorString()));
+        return {};
+    }
+
+    return doc.isObject() ? QJsonValue(doc.object())
+                          : QJsonValue(doc.array());
+}
