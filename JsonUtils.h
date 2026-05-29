@@ -80,17 +80,33 @@ std::optional<T> convertJsonAndLogError(const QJsonValue &value, const QString& 
     return convertJsonValueToType<T>(value);
 }
 
-//we have to wrap it in array or object, this wraps in array
+//If value is not array or object, its wrapped into an array (cant save it otherwise)
 inline QString jsonValueToString(const QJsonValue &value)
 {
-    QJsonArray myArray;
-    myArray.append(value);
-
     QJsonDocument doc;
-    doc.setArray(myArray);
+    if (value.isObject())
+    {
+        doc.setObject(value.toObject());
+    }
+    else if (value.isArray())
+    {
+        doc.setArray(value.toArray());
+    }
+    else
+    {
+        QJsonArray myArray;
+        myArray.append(value);
+        doc.setArray(myArray);
+    }
 
     return doc.toJson(QJsonDocument::Indented).trimmed();
 }
+
+inline bool saveJsonValueToFile(const QJsonValue &value, const QString& filePath)
+{
+    return writeStringToFile(jsonValueToString(value), filePath);
+}
+
 
 inline QJsonArrayOpt jsonStringToArray(const QString& jsonString)
 {
@@ -122,7 +138,7 @@ inline QJsonValueOpt loadJsonFromFile(const QString& jsonFilePath)
     QJsonDocument doc = QJsonDocument::fromJson(data, &error);
     if (error.error != QJsonParseError::NoError)
     {
-        SV_ERROR(std::format("Cant load JSON from [{}] because parse error occured:", jsonFilePath, error.errorString()));
+        SV_ERROR(std::format("Cant load JSON from [{}] because parse error occured: {}", jsonFilePath, error.errorString()));
         return {};
     }
 

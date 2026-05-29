@@ -254,3 +254,27 @@ template <typename WidgetT>
 concept IsConcreteWidget =
     std::derived_from<std::decay_t<WidgetT>, QWidget> &&
     !std::same_as    <std::decay_t<WidgetT>, QWidget>;
+
+//overwrites content
+inline bool writeStringToFile(const QString &content, const QString &filepath)
+{
+    QFile file(filepath);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        SV_ERROR(std::format("Couldnt write string to file: couldnt open file to write: {}", filepath.toStdString()));
+        return false; // failed to open
+    }
+
+    auto totalBytes = content.toUtf8().size();
+    auto writtenBytes = file.write(content.toUtf8());
+    file.close();
+
+    bool writtenOk = writtenBytes == totalBytes;
+
+    if (!writtenOk)
+    {
+        SV_ERROR(std::format("Couldnt write string to file: only written [{}/{} bytes] to: {}", writtenBytes, totalBytes, filepath.toStdString()));
+    }
+
+    return writtenOk;
+}
