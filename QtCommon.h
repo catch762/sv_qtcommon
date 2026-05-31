@@ -21,6 +21,8 @@
 #include <QScrollArea>
 #include <QKeyEvent>
 #include <QMouseEvent>
+#include <QDir>
+#include <QMessageBox>
 
 SV_DECL_OPT(QString)
 SV_DECL_OPT(QJsonArray)
@@ -278,3 +280,26 @@ inline bool writeStringToFile(const QString &content, const QString &filepath)
 
     return writtenOk;
 }
+
+inline void extractAllWidgetsFromLayoutAndDeleteNestedLayouts(QLayout *layout, QList<QWidget*>* outWidgets = nullptr)
+{
+    while (QLayoutItem *item = layout->takeAt(0))
+    {
+        if (QWidget *w = item->widget())
+        {
+            if (outWidgets) outWidgets->push_back(w);
+            w->setParent(nullptr);
+        }
+        else if (QLayout *childLayout = item->layout())
+        {
+            extractAllWidgetsFromLayoutAndDeleteNestedLayouts(childLayout, outWidgets);
+            delete childLayout;
+        }
+        delete item; // only deletes the layout item
+    }
+}
+
+//Addition to logger
+#define SV_MSGBOX_LOG(text)     {SV_LOG(text);   QMessageBox::information(nullptr, "Information", QString::fromStdString(text));}
+#define SV_MSGBOX_WARN(text)    {SV_WARN(text);  QMessageBox::warning(nullptr, "Warning", QString::fromStdString(text));}
+#define SV_MSGBOX_ERROR(text)   {SV_ERROR(text); QMessageBox::critical(nullptr, "Error", QString::fromStdString(text));}
