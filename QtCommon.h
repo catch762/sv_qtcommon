@@ -303,3 +303,42 @@ inline void extractAllWidgetsFromLayoutAndDeleteNestedLayouts(QLayout *layout, Q
 #define SV_MSGBOX_LOG(text)     {SV_LOG(text);   QMessageBox::information(nullptr, "Information", QString::fromStdString(text));}
 #define SV_MSGBOX_WARN(text)    {SV_WARN(text);  QMessageBox::warning(nullptr, "Warning", QString::fromStdString(text));}
 #define SV_MSGBOX_ERROR(text)   {SV_ERROR(text); QMessageBox::critical(nullptr, "Error", QString::fromStdString(text));}
+
+inline void printLayoutContents(QLayout *layout)
+{
+    if (!layout) {
+        qDebug() << "layout: nullptr";
+        return;
+    }
+
+    qDebug().noquote() << "Layout" << layout
+                       << "type:" << layout->metaObject()->className()
+                       << "itemCount:" << layout->count();
+
+    for (int i = 0; i < layout->count(); ++i)
+    {
+        QLayoutItem *item = layout->itemAt(i);
+        if (!item) {
+            qDebug().noquote() << " [" << i << "] <null item>";
+            continue;
+        }
+
+        if (QWidget *w = item->widget()) {
+            qDebug().noquote() << " [" << i << "] widget:"
+                               << w->metaObject()->className()
+                               << "objectName=" << w->objectName()
+                               << "ptr=" << w;
+        } else if (item->layout()) {
+            qDebug().noquote() << " [" << i << "] nested layout:"
+                               << item->layout()->metaObject()->className()
+                               << "ptr=" << item->layout();
+        } else if (QSpacerItem *s = item->spacerItem()) {
+            qDebug().noquote() << " [" << i << "] spacer:"
+                               << "sizeHint=" << s->sizeHint()
+                               << "minSize=" << s->minimumSize()
+                               << "expandingDirections=" << s->expandingDirections();
+        } else {
+            qDebug().noquote() << " [" << i << "] unknown QLayoutItem";
+        }
+    }
+}
