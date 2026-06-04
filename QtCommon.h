@@ -29,6 +29,7 @@ SV_DECL_OPT(QJsonArray)
 SV_DECL_OPT(QJsonObject)
 SV_DECL_OPT(QJsonValue)
 SV_DECL_OPT(QVariant)
+SV_DECL_OPT(QDir)
 
 using QtTypeIndex = int;
 SV_DECL_OPT(QtTypeIndex);
