@@ -15,6 +15,6 @@
 #include "StdFormattersForQt.h"
 #include "QtCommon.h"
 #include "JsonUtils.h"
-
+#include "LayoutUtils.h"
 #include "ParseUtils.h"
 #include "Widgets/HorizontalScrollAreaWidget.h"

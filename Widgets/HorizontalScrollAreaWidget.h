@@ -33,7 +33,9 @@ class HorizontalScrollAreaWidget : public QWidget
     Q_OBJECT
 public:
     HorizontalScrollAreaWidget(QWidget *parent = nullptr);
-
+    HorizontalWheelScrollArea* getScrollArea();
+    QHBoxLayout* getContentLayout();
+    
 private:
     QPushButton* makeScrollButton(bool isLeft);
     void doScrollBy(int pixels); //negative will scroll left

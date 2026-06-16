@@ -59,12 +59,12 @@ HorizontalScrollAreaWidget::HorizontalScrollAreaWidget(QWidget *parent)
     presetLayout->setContentsMargins(0,0,0,0);
     presetLayout->setSpacing(0);
     
-    for (int i = 0; i < 10; ++i) {
+    /*for (int i = 0; i < 10; ++i) {
         QPushButton *btn = new QPushButton(QString("%1").arg(i), presetContainer);
         btn->setFixedSize(Height-4, Height-4);
         presetLayout->addWidget(btn);
     }
-    presetLayout->addStretch();
+    presetLayout->addStretch();*/
 
     buttonScrollLeft = makeScrollButton(true);
     buttonScrollRight = makeScrollButton(false);
@@ -103,6 +103,16 @@ HorizontalScrollAreaWidget::HorizontalScrollAreaWidget(QWidget *parent)
     layout->addWidget(buttonScrollRight);
 
     presetScrollArea->emitCanScrollUpdated();
+}
+
+HorizontalWheelScrollArea *HorizontalScrollAreaWidget::getScrollArea()
+{
+    return presetScrollArea;
+}
+
+QHBoxLayout *HorizontalScrollAreaWidget::getContentLayout()
+{
+    return presetLayout;
 }
 
 QPushButton *HorizontalScrollAreaWidget::makeScrollButton(bool isLeft)
