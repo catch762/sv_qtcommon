@@ -40,24 +40,31 @@ void HorizontalWheelScrollArea::resizeEvent(QResizeEvent *event)
 
 
 
-
-
-
-
-
-HorizontalScrollAreaWidget::HorizontalScrollAreaWidget(QWidget *parent)
+namespace
 {
+constexpr int VerticalMargin = 2;
+
+// cant really obtain it in a sane fashion (have to wait until widget is done resizing,
+// then query scrollarea viewport size, but i need it earlier... i ll just leave it as constant)
+constexpr int VerticalAdditionalFuckingImplicitScrollAreaViewportFuckingMargin = 2;
+}
+
+HorizontalScrollAreaWidget::HorizontalScrollAreaWidget(int FixedContentHeight, QWidget *parent)
+    : QWidget(parent), ContentHeight(FixedContentHeight)
+{
+    setFixedHeight(ContentHeight + VerticalMargin * 2 + VerticalAdditionalFuckingImplicitScrollAreaViewportFuckingMargin * 2);
+
     layout = new QHBoxLayout(this);
-    layout->setContentsMargins(2,2,2,2);
+    layout->setContentsMargins(2,VerticalMargin,2,VerticalMargin);
     layout->setSpacing(2);
 
     presetContainer = new QWidget(this);
     
     //presetContainer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
-    //presetContainer->setFixedHeight(Height);
+    //presetContainer->setFixedHeight(ContentHeight + VerticalAdditionalFuckingImplicitScrollAreaViewportFuckingMargin * 2);
     presetLayout = new QHBoxLayout(presetContainer);
     presetLayout->setContentsMargins(0,0,0,0);
-    presetLayout->setSpacing(0);
+    presetLayout->setSpacing(1);
     
     /*for (int i = 0; i < 10; ++i) {
         QPushButton *btn = new QPushButton(QString("%1").arg(i), presetContainer);
@@ -76,7 +83,14 @@ HorizontalScrollAreaWidget::HorizontalScrollAreaWidget(QWidget *parent)
         presetScrollArea->setWidgetResizable(true);
         presetScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         presetScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        presetScrollArea->setFixedHeight(Height);
+        presetScrollArea->setFixedHeight(ContentHeight + VerticalAdditionalFuckingImplicitScrollAreaViewportFuckingMargin * 2);
+
+        {
+            int scrollAreaHeight = presetScrollArea->height();
+            int viewportHeight = presetScrollArea->viewport()->height();
+            int verticalPadding = scrollAreaHeight - viewportHeight;
+            SV_WARN(std::format("{} {} {}", scrollAreaHeight, viewportHeight, verticalPadding));
+        }
 
         connect(presetScrollArea, &HorizontalWheelScrollArea::canScrollUpdated, this, [this](bool canScrollLeft, bool canScrollRight)
         {
@@ -130,32 +144,40 @@ QPushButton *HorizontalScrollAreaWidget::makeScrollButton(bool isLeft)
         return stylesheet;
     }();
 
-    auto makeIcon = [this](bool isLeft)->QIcon
+    auto makeIcon = [&](bool isLeft)->QIcon
     {
-        QIcon originalIcon = style()->standardIcon(isLeft ? QStyle::SP_ArrowLeft : QStyle::SP_ArrowRight);
-
-        //something like bright solid blue for me
-        QColor activeColor = palette().color(QPalette::Active, QPalette::Highlight); 
-
-        //Its black by default and issue is, it looks almost same as when its disabled.
-        //So we repaint it with 'activeColor'. (this replaces all black pixels to blue)
-        QPixmap pixmap = originalIcon.pixmap(QSize(10, 10));
+        auto makeArrowPixmap = [&](bool isLeft, QColor color)
         {
-            QPainter painter(&pixmap);
-            painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
-            painter.fillRect(pixmap.rect(), activeColor);
-            painter.end();
-        }
+            QIcon originalIcon = style()->standardIcon(isLeft ? QStyle::SP_ArrowLeft : QStyle::SP_ArrowRight);
 
-        //It keeps vanilla gray color for disabled state
-        return QIcon(pixmap);
+            //Its black by default and issue is, it looks almost same as when its disabled.
+            //So we repaint it
+            QPixmap pixmap = originalIcon.pixmap(QSize(10, 10));
+            {
+                QPainter painter(&pixmap);
+                painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+                painter.fillRect(pixmap.rect(), color);
+                painter.end();
+            }
+            return pixmap;
+        };
+
+
+        QColor activeColor = palette().color(QPalette::Active, QPalette::Highlight); 
+        QColor disabledColor = QColor(215,215,215);
+        
+        QIcon icon;
+        icon.addPixmap(makeArrowPixmap(isLeft, activeColor), QIcon::Normal);
+        icon.addPixmap(makeArrowPixmap(isLeft, disabledColor), QIcon::Disabled);
+        
+        return icon;
     };
 
     static QIcon iconLeft = makeIcon(true);
     static QIcon iconRight = makeIcon(false);
 
     auto btn = new QPushButton(this);
-    btn->setFixedSize(15, Height);
+    btn->setFixedSize(15, ContentHeight);
 
     btn->setIcon(isLeft ? iconLeft : iconRight);
     btn->setStyleSheet(btnStylesheet);
@@ -169,4 +191,6 @@ void HorizontalScrollAreaWidget::doScrollBy(int pixels)
     SV_ASSERT(bar);
 
     bar->setValue(bar->value() + pixels);
+
+    SV_WARN(std::format("SVD Height of fucking presetContainer {}", presetContainer->height()));
 }

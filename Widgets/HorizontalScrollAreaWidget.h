@@ -32,7 +32,7 @@ class HorizontalScrollAreaWidget : public QWidget
 {
     Q_OBJECT
 public:
-    HorizontalScrollAreaWidget(QWidget *parent = nullptr);
+    HorizontalScrollAreaWidget(int FixedContentHeight, QWidget *parent = nullptr);
     HorizontalWheelScrollArea* getScrollArea();
     QHBoxLayout* getContentLayout();
     
@@ -48,5 +48,5 @@ private:
     QHBoxLayout*                    presetLayout      = nullptr;
     QPushButton*                  buttonScrollRight   = nullptr;
 private:
-    int Height = 30;
+    const int ContentHeight = 0;
 };

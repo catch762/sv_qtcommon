@@ -305,6 +305,15 @@ inline void extractAllWidgetsFromLayoutAndDeleteNestedLayouts(QLayout *layout, Q
 #define SV_MSGBOX_WARN(text)    {SV_WARN(text);  QMessageBox::warning(nullptr, "Warning", QString::fromStdString(text));}
 #define SV_MSGBOX_ERROR(text)   {SV_ERROR(text); QMessageBox::critical(nullptr, "Error", QString::fromStdString(text));}
 
+inline void applyWidgetBorder(QWidget *widget) {
+    widget->setStyleSheet(
+        "background-color: transparent;"
+        "border: 1px solid red;"
+        "border-radius: 0px;"
+        "padding: 0px;"
+    );
+}
+
 inline void printLayoutContents(QLayout *layout)
 {
     if (!layout) {
