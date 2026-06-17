@@ -26,6 +26,11 @@ bool jsonValueIsType<double>(const QJsonValue &val) {
 }
 
 template <>
+bool jsonValueIsType<int>(const QJsonValue &val) {
+    return val.isDouble();
+}
+
+template <>
 bool jsonValueIsType<QString>(const QJsonValue &val) {
     return val.isString();
 }
@@ -48,6 +53,11 @@ bool convertJsonValueToType<bool>(const QJsonValue &val) {
 template <>
 double convertJsonValueToType<double>(const QJsonValue &val) {
     return val.toDouble();
+}
+
+template <>
+int convertJsonValueToType<int>(const QJsonValue &val) {
+    return int(val.toDouble());
 }
 
 template <>

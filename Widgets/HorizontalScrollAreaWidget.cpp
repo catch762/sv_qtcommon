@@ -85,13 +85,6 @@ HorizontalScrollAreaWidget::HorizontalScrollAreaWidget(int FixedContentHeight, Q
         presetScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         presetScrollArea->setFixedHeight(ContentHeight + VerticalAdditionalFuckingImplicitScrollAreaViewportFuckingMargin * 2);
 
-        {
-            int scrollAreaHeight = presetScrollArea->height();
-            int viewportHeight = presetScrollArea->viewport()->height();
-            int verticalPadding = scrollAreaHeight - viewportHeight;
-            SV_WARN(std::format("{} {} {}", scrollAreaHeight, viewportHeight, verticalPadding));
-        }
-
         connect(presetScrollArea, &HorizontalWheelScrollArea::canScrollUpdated, this, [this](bool canScrollLeft, bool canScrollRight)
         {
             buttonScrollLeft->setEnabled(canScrollLeft);
@@ -169,7 +162,7 @@ QPushButton *HorizontalScrollAreaWidget::makeScrollButton(bool isLeft)
         QIcon icon;
         icon.addPixmap(makeArrowPixmap(isLeft, activeColor), QIcon::Normal);
         icon.addPixmap(makeArrowPixmap(isLeft, disabledColor), QIcon::Disabled);
-        
+
         return icon;
     };
 
@@ -191,6 +184,4 @@ void HorizontalScrollAreaWidget::doScrollBy(int pixels)
     SV_ASSERT(bar);
 
     bar->setValue(bar->value() + pixels);
-
-    SV_WARN(std::format("SVD Height of fucking presetContainer {}", presetContainer->height()));
 }

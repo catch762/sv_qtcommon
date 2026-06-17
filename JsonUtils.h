@@ -3,11 +3,13 @@
 
 QString getQJsonValueTypeName(const QJsonValue& value);
 
+//Note! you can use 'int' to check and to convert - it will check if value is double, and convert from double
 template <typename T>
 bool jsonValueIsType(const QJsonValue &val);
 
 template<> bool jsonValueIsType<bool>(const QJsonValue &val);
 template<> bool jsonValueIsType<double>(const QJsonValue &val);
+template<> bool jsonValueIsType<int>(const QJsonValue &val); //special case for int
 template<> bool jsonValueIsType<QString>(const QJsonValue &val);
 template<> bool jsonValueIsType<QJsonArray>(const QJsonValue &val);
 template<> bool jsonValueIsType<QJsonObject>(const QJsonValue &val);
@@ -17,6 +19,7 @@ T convertJsonValueToType(const QJsonValue &val);
 
 template <> bool convertJsonValueToType<bool>(const QJsonValue &val);
 template <> double convertJsonValueToType<double>(const QJsonValue &val);
+template <> int convertJsonValueToType<int>(const QJsonValue &val); //special case for int
 template <> QString convertJsonValueToType<QString>(const QJsonValue &val);
 template <> QJsonArray convertJsonValueToType<QJsonArray>(const QJsonValue &val);
 template <> QJsonObject convertJsonValueToType<QJsonObject>(const QJsonValue &val);
