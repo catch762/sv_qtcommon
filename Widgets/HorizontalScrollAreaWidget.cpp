@@ -42,7 +42,7 @@ void HorizontalWheelScrollArea::resizeEvent(QResizeEvent *event)
 
 namespace
 {
-constexpr int VerticalMargin = 2;
+constexpr int VerticalMargin = 0;
 
 // cant really obtain it in a sane fashion (have to wait until widget is done resizing,
 // then query scrollarea viewport size, but i need it earlier... i ll just leave it as constant)
