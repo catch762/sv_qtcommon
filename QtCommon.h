@@ -72,6 +72,12 @@ inline bool canConvert(const QVariant &qVariant)
     return qVariant.canConvert(QMetaType::fromType<T>());
 }
 
+template<typename T>
+inline bool holdsType(const QVariant& v)
+{
+    return v.typeId() == qtTypeId<T>();
+}
+
 template <typename T>
 inline std::optional<T> getValueOpt(const QVariant &qVariant)
 {
