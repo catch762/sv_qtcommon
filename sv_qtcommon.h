@@ -10,8 +10,13 @@
 // USAGE: besides having dependencies met, you only need to include this header.
 //
 //*******************************************************************************
-
+#pragma once
 #include "sv_common.h"
+
+//All type names better go here, first thing we do:
+#include <QString>
+SV_REGTYPENAME(QString);
+
 #include "StdFormattersForQt.h"
 #include "QtCommon.h"
 #include "JsonUtils.h"
