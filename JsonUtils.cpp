@@ -5,11 +5,11 @@ QString getQJsonValueTypeName(const QJsonValue& value)
     switch (value.type())
     {
         case QJsonValue::Null:      return "NULL";
-        case QJsonValue::Bool:      return qtTypeName<bool>();
-        case QJsonValue::Double:    return qtTypeName<double>();
-        case QJsonValue::String:    return qtTypeName<QString>();
-        case QJsonValue::Array:     return qtTypeName<QJsonArray>();
-        case QJsonValue::Object:    return qtTypeName<QJsonObject>();
+        case QJsonValue::Bool:      return "bool";
+        case QJsonValue::Double:    return "double";
+        case QJsonValue::String:    return "QString";
+        case QJsonValue::Array:     return "QJsonArray";
+        case QJsonValue::Object:    return "QJsonObject";
         case QJsonValue::Undefined: return "UNDEFINED";
     }
     return "UNKNOWN";
