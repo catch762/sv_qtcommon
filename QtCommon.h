@@ -31,7 +31,6 @@ SV_DECL_OPT(QJsonValue)
 SV_DECL_OPT(QVariant)
 SV_DECL_OPT(QDir)
 
-/*
 
 using QtTypeIndex = int;
 SV_DECL_OPT(QtTypeIndex);
@@ -109,8 +108,6 @@ inline QString qVariantInfo(const QVariant &var)
 {
     return QString("QVariant[typeid=%1][typename=%2][tostring=%3]").arg(var.typeId()).arg(var.typeName()).arg(var.toString());
 }
-
-*/
 
 inline double getSliderValue01(const QSlider* slider)
 {

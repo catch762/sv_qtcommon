@@ -7,4 +7,4 @@
 SV_DECL_STD_FORMATTER(QString, obj.toStdString());
 SV_DECL_STD_FORMATTER(std::optional<QString>, obj ? obj->toStdString() : std::string(""));
 
-//SV_DECL_STD_FORMATTER(QVariant, qVariantInfo(obj));
+SV_DECL_STD_FORMATTER(QVariant, qVariantInfo(obj));
