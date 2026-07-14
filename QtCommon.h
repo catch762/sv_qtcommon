@@ -12,8 +12,6 @@
 #include <QGridLayout>
 #include <QPushButton>
 #include <QLabel>
-#include <QLineEdit>
-#include <QSpinBox>
 #include <QComboBox>
 #include <QFrame>
 #include <QSlider>
@@ -26,6 +24,7 @@
 
 SV_DECL_OPT(QString)
 SV_DECL_OPT(QJsonArray)
+SV_DECL_OPT(QByteArray)
 SV_DECL_OPT(QJsonObject)
 SV_DECL_OPT(QJsonValue)
 SV_DECL_OPT(QVariant)
