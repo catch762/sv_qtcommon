@@ -288,6 +288,43 @@ inline bool writeStringToFile(const QString &content, const QString &filepath)
     return writtenOk;
 }
 
+inline QByteArrayOpt readByteArrayFromFile(const QString& filePath)
+{
+    QFile file(filePath);
+
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        SV_ERROR(std::format("readByteArrayFromFile: cant open file to read, path = [{}], error = [{}]",
+            filePath.toStdString(), file.errorString().toStdString()));
+        return {};
+    }
+
+    return file.readAll();
+}
+
+inline bool writeByteArrayToFile(const QString& filePath, const QByteArray& data)
+{
+    QFile file(filePath);
+
+    if (!file.open(QIODevice::WriteOnly))
+    {
+        SV_ERROR(std::format("writeByteArrayToFile: cant open file to write, path = [{}], error = [{}]",
+            filePath.toStdString(), file.errorString().toStdString()));
+        return false;
+    }
+
+    auto bytesWritten = file.write(data);
+
+    if (bytesWritten != data.size())
+    {
+        SV_ERROR(std::format("writeByteArrayToFile: error, written only [{} / {}] bytes",
+            bytesWritten, data.size()));
+        return false;
+    }
+
+    return true;
+}
+
 inline void extractAllWidgetsFromLayoutAndDeleteNestedLayouts(QLayout *layout, QList<QWidget*>* outWidgets = nullptr)
 {
     while (QLayoutItem *item = layout->takeAt(0))
