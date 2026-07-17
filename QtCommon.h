@@ -358,3 +358,10 @@ inline void printLayoutContents(QLayout *layout)
         }
     }
 }
+
+//accepts both absolute paths like "C:/filename.tar.gz" and relative like "filename.tar.gz"
+//and returns just "filename"
+inline QString getFileNameWithoutExtension(const QString& filePathOrFileName)
+{
+    return QFileInfo(filePathOrFileName).baseName();
+}
