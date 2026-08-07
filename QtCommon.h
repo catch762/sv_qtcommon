@@ -325,6 +325,7 @@ inline bool writeByteArrayToFile(const QString& filePath, const QByteArray& data
     return true;
 }
 
+//todo this looks retarded
 inline void extractAllWidgetsFromLayoutAndDeleteNestedLayouts(QLayout *layout, QList<QWidget*>* outWidgets = nullptr)
 {
     while (QLayoutItem *item = layout->takeAt(0))
