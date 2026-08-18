@@ -22,4 +22,5 @@ SV_REGTYPENAME(QString);
 #include "JsonUtils.h"
 #include "LayoutUtils.h"
 #include "ParseUtils.h"
+#include "StylesheetUtils.h"
 #include "Widgets/HorizontalScrollAreaWidget.h"
