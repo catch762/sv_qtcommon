@@ -23,4 +23,5 @@ SV_REGTYPENAME(QString);
 #include "LayoutUtils.h"
 #include "ParseUtils.h"
 #include "StylesheetUtils.h"
+#include "FileUtils.h"
 #include "Widgets/HorizontalScrollAreaWidget.h"
