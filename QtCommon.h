@@ -325,21 +325,25 @@ inline bool writeByteArrayToFile(const QString& filePath, const QByteArray& data
     return true;
 }
 
-//todo this looks retarded
-inline void extractAllWidgetsFromLayoutAndDeleteNestedLayouts(QLayout *layout, QList<QWidget*>* outWidgets = nullptr)
+inline void extractAllWidgetsFromLayoutWithNoSublayouts(QLayout *layout, QList<QWidget*>* outWidgets = nullptr)
 {
     while (QLayoutItem *item = layout->takeAt(0))
     {
-        if (QWidget *w = item->widget())
+        if (QWidget* w = item->widget())
         {
             if (outWidgets) outWidgets->push_back(w);
             w->setParent(nullptr);
         }
-        else if (QLayout *childLayout = item->layout())
+        else if (QLayout* childLayout = item->layout())
         {
-            extractAllWidgetsFromLayoutAndDeleteNestedLayouts(childLayout, outWidgets);
-            delete childLayout;
+            SV_ASSERT(false && "i thought this layout only contains widgets/spacers, and heres layout");
         }
+        else if (QSpacerItem* spacer = item->spacerItem())
+        {
+            //nothing to do, only delete item in the end
+        }
+        else SV_UNREACHABLE();
+
         delete item; // only deletes the layout item
     }
 }
