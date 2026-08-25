@@ -148,3 +148,23 @@ inline QJsonValueOpt loadJsonFromFile(const QString& jsonFilePath)
     return doc.isObject() ? QJsonValue(doc.object())
                           : QJsonValue(doc.array());
 }
+
+// - Src and dst objects must not have values with same name.
+//   if same key is found, error is immediately returned
+inline StringErrOpt mergeJsonObjectsWithUniqueKeys(QJsonObject& dst, const QJsonObjectOpt& src)
+{
+    if (!src || src->isEmpty()) return {};
+
+    for (auto [_key, value] : src->asKeyValueRange())
+    {
+        QString key = _key.toString();
+        if (dst.contains(key))
+        {
+            return std::format("Merge error: destination QJsonObject already has key [{}]", key);
+        }
+
+        dst[key] = value;
+    }
+
+    return {};
+}
