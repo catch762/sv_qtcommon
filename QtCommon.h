@@ -20,6 +20,8 @@
 #include <QKeyEvent>
 #include <QMouseEvent>
 #include <QDir>
+#include <QPainter>
+#include <QPaintEvent>
 #include <QMessageBox>
 
 SV_DECL_OPT(QString)
@@ -406,4 +408,19 @@ inline void printLayoutContents(QLayout *layout)
 inline QString getFileNameWithoutLastExtension(const QString& filePathOrFileName)
 {
     return QFileInfo(filePathOrFileName).completeBaseName();
+}
+
+//coord01: 0.0 corresponds to middle of leftmost pixel, 1.0 corresponds to middle of rightmost pixel
+inline double coord01ToPixelRange(int leftmostPixel, int rightmostPixel, double coord01)
+{
+    int actualPixelRange = rightmostPixel - leftmostPixel;
+
+    return 0.5 + double(actualPixelRange) * coord01;
+}
+
+inline QPointF pixCoordOfNdcCoord(QRect rect, glm::vec2 ndc11)
+{
+    double pix_x = coord01ToPixelRange(rect.left(), rect.right (), value11To01( ndc11.x));
+    double pix_y = coord01ToPixelRange(rect.top (), rect.bottom(), value11To01(-ndc11.y));
+    return { pix_x, pix_y };
 }
