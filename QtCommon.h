@@ -424,3 +424,18 @@ inline QPointF pixCoordOfNdcCoord(QRect rect, glm::vec2 ndc11)
     double pix_y = coord01ToPixelRange(rect.top (), rect.bottom(), value11To01(-ndc11.y));
     return { pix_x, pix_y };
 }
+
+inline QColor mixColors(QColor a, QColor b, double ratio01)
+{
+    ratio01 = std::clamp(ratio01, 0.0, 1.0);
+
+    mix(a.redF(), b.redF(), ratio01);
+
+    QColor res;
+    res.setRedF     (mix(a.redF  (), b.redF  (), ratio01));
+    res.setGreenF   (mix(a.greenF(), b.greenF(), ratio01));
+    res.setBlueF    (mix(a.blueF (), b.blueF (), ratio01));
+    res.setAlphaF   (mix(a.alphaF(), b.alphaF(), ratio01));
+
+    return res;
+}
