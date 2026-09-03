@@ -1,6 +1,6 @@
 #include "SliderAndSpinbox.h"
 
-SliderAndSpinbox::SliderAndSpinbox(QWidget* parent, double min, double max, double initialVal, bool sliderOnTheLeft, QMargins layoutMargins, int layoutSpacing)
+SliderAndSpinbox::SliderAndSpinbox(QWidget* parent, double min, double max, double initialVal, bool sliderOnTheLeft, int spinboxFixedWidth, QMargins layoutMargins, int layoutSpacing)
 	: QWidget(parent)
 {
 	normalizeRange(min, max, initialVal);
@@ -11,6 +11,7 @@ SliderAndSpinbox::SliderAndSpinbox(QWidget* parent, double min, double max, doub
 	layout->setSpacing(layoutSpacing);
 
 	spinbox = makeStandardSpinbox(this, min, max, initialVal);
+	spinbox->setFixedWidth(spinboxFixedWidth);
 	slider = makeSliderForNormDouble(this, val01);
 
 	//slave sets master value loudly

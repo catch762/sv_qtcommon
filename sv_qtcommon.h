@@ -25,6 +25,8 @@ SV_REGTYPENAME(QString);
 #include "StylesheetUtils.h"
 #include "FileUtils.h"
 
+#include "StdWidgetsUtils.h"
+
 #include "Widgets/HorizontalScrollAreaWidget.h"
 #include "Widgets/SliderAndSpinbox.h"
 #include "Widgets/GlmVecSpinboxes.h"

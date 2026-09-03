@@ -1,5 +1,6 @@
 #pragma once
 #include "../QtCommon.h"
+#include "../StdWidgetsUtils.h"
 
 class SliderAndSpinbox : public QWidget
 {
@@ -10,6 +11,7 @@ public:
 						double		max					= 1,
 						double		initialVal			= 0,
 						bool		sliderOnTheLeft		= true,
+						int			spinboxFixedWidth	= 60,
 						QMargins	layoutMargins		= QMargins(0,0,0,0),
 						int			layoutSpacing		= 4 );
 
