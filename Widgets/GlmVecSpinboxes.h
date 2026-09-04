@@ -7,10 +7,12 @@ class SpinboxesHelper
 public:
 	using VecT = glm::vec<Count, float, glm::qualifier::defaultp>;
 
+	static constexpr int LayoutSpacing = 2;
+
 	SpinboxesHelper(VecT val, QWidget* spinboxesParent)
 	{
 		layout = new QHBoxLayout(spinboxesParent);
-		initLayoutSpacing(layout, 0, 2);
+		initLayoutSpacing(layout, 0, LayoutSpacing);
 
 		for (int i = 0; i < Count; ++i)
 		{
@@ -20,7 +22,22 @@ public:
 			layout->addWidget(spinbox);
 		}
 
+		spinboxesParent->setMinimumWidth(minimumWidth());
+
 		setValue(val);
+	}
+
+	int minimumWidth() const
+	{
+		return Count * 30 + LayoutSpacing * (Count - 1);
+	}
+	int sizeHintWidth() const
+	{
+		return minimumWidth(); //idk, its fine
+	}
+	int minimumSizeHintWidth() const
+	{
+		return minimumWidth(); //idk, its fine
 	}
 
 	template<typename Visitor>
@@ -89,6 +106,15 @@ public:
 	{
 		helper.setValue(value);
 		emit valueChanged(getValue());
+	}
+
+	QSize sizeHint() const override
+	{
+		return{ helper.sizeHintWidth(), QWidget::sizeHint().height() };
+	}
+	QSize minimumSizeHint() const override
+	{
+		return{ helper.minimumSizeHintWidth(), QWidget::sizeHint().height() };
 	}
 
 signals:

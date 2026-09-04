@@ -1,5 +1,17 @@
 #pragma once
 #include "QtCommon.h"
+#include "StdFormattersForQt.h"
+
+inline std::string widgetInfo(QWidget* w)
+{
+    return std::format("[{}]: name='{}', w=[min {}; cur {}; max {}], h=[min {}; cur {}; max {}], sizeHint[{}; {}], minSizeHint[{}; {}]",
+        w->metaObject()->className(),
+        w->objectName(),
+        w->minimumWidth(), w->width(), w->maximumWidth(),
+        w->minimumHeight(), w->height(), w->maximumHeight(),
+        w->sizeHint().width(), w->sizeHint().height(),
+        w->minimumSizeHint().width(), w->minimumSizeHint().height());
+}
 
 //************
 //  QSlider
