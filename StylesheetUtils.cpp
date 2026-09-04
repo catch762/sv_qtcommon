@@ -1,54 +1,11 @@
 #include "StylesheetUtils.h"
 
-void setQWidgetBackground(QWidget* widget, QColor backgroundColor, bool withObjectName)
+QString str(const QColor& color)
 {
-    static const QString stylePattern =
-        "QWidget%1{background-color: %2;}";
-
-    QString finalStyle = stylePattern
-        .arg(withObjectName ? "#" + widget->objectName() : "")
-        .arg(backgroundColor.name(QColor::HexArgb));
-    widget->setStyleSheet(finalStyle);
+    return color.name(QColor::HexArgb);
 }
 
-QString defaultPushButtonStyleWithoutMargins()
-{
-    return R"(
-        QPushButton {
-            background: rgb(251, 251, 251);
-            border: 1px solid rgb(231, 231, 231);
-            border-radius: 2px;
-            padding: 0px;
-            margin: 0px;
-        }
-
-        QPushButton:hover:!pressed {
-            background: rgb(245, 245, 245);
-        }
-
-        QPushButton:pressed {
-            background: rgb(238, 238, 238);
-        }
-
-        QPushButton:checked {
-            background: rgb(0, 120, 215);
-            color: white;
-            border-color: rgb(0, 100, 180);
-        }
-
-        QPushButton:checked:hover {
-            background: rgb(0, 130, 235);
-        }
-
-        QPushButton:checked:pressed {
-            background: rgb(0, 100, 180);
-        }
-    )";
-}
-
-//adds diff to all r/g/b components, but if it would go beyound 0 or 255, diff is negated.
-//so we can be sure resulting color is truly different by that much (maybe different in other direction but whatever)
-QColor slightlyDiffColor(QColor in, const int diff = 7)
+QColor slightlyDiffColor(QColor in, const int diff)
 {
     auto change = [&](int in)
     {
@@ -67,63 +24,66 @@ QColor slightlyDiffColor(QColor in, const int diff = 7)
     return QColor(change(in.red()), change(in.green()), change(in.blue()));
 }
 
-QString sanePushButtonStyleWithoutMargins(  QColorOpt _background,
-                                            QColorOpt _border,
-                                            QColorOpt _hoverColor,
-                                            QColorOpt _checkedColor,
-                                            QColorOpt _checkedFontColor,
-                                            QColorOpt _checkedHoverColor)
+void setQWidgetBackground(QWidget* widget, QColor backgroundColor, bool withObjectName)
 {
-    QColor background       = _background.value_or(QColor(251, 251, 251));
-    QColor border           = _border.value_or(QColor(231, 231, 231));
+    static const QString stylePattern =
+        "QWidget%1{background-color: %2;}";
 
-    QColor hover            = _hoverColor.value_or( slightlyDiffColor(background, -6) );
+    QString finalStyle = stylePattern
+        .arg(withObjectName ? "#" + widget->objectName() : "")
+        .arg(backgroundColor.name(QColor::HexArgb));
+    widget->setStyleSheet(finalStyle);
+}
 
-    QColor pressed          = slightlyDiffColor(background, -13); //i dont give a fuck
 
-    QColor checked          = _checkedColor.value_or(QColor(0,120,215));
-    QColor checkedFont      = _checkedFontColor.value_or(Qt::white);
-    QColor checkedHover     = _checkedHoverColor.value_or(QColor(0, 130, 235)); //i wouldnt give a fuck
-
-    QColor checkedPressed   = slightlyDiffColor(background, -13); //i dont give a fuck
-
+QString makeStyleFromButtonSpec(const PushButtonSpec& spec)
+{
     return QString(R"(
         QPushButton {
             background: %1;
-            border: 1px solid %2;
+            color: %2;
+            border: 1px solid %3;
             border-radius: 2px;
             padding: 0px;
             margin: 0px;
         }
 
         QPushButton:hover:!pressed {
-            background: %3;
-        }
-
-        QPushButton:pressed {
             background: %4;
         }
 
-        QPushButton:checked {
+        QPushButton:pressed {
             background: %5;
-            color: %6;
-            border-color: %2;
+        }
+
+        QPushButton:checked {
+            background: %6;
+            color: %7;
+            border-color: %8;
         }
 
         QPushButton:checked:hover {
-            background: %7;
+            background: %9;
         }
 
         QPushButton:checked:pressed {
-            background: %8;
+            background: %10;
         }
     )")
-    .arg(background.name(QColor::HexArgb))
-    .arg(border.name(QColor::HexArgb))
-    .arg(hover.name(QColor::HexArgb))
-    .arg(pressed.name(QColor::HexArgb))
-    .arg(checked.name(QColor::HexArgb))
-    .arg(checkedFont.name(QColor::HexArgb))
-    .arg(checkedHover.name(QColor::HexArgb))
-    .arg(checkedPressed.name(QColor::HexArgb));
+    .arg(str(spec.background))
+    .arg(str(spec.font))
+    .arg(str(spec.border))
+    .arg(str(spec.hover))
+    .arg(str(spec.pressed))
+    .arg(str(spec.checkedBackground))
+    .arg(str(spec.checkedFont))
+    .arg(str(spec.checkedBorder))
+    .arg(str(spec.checkedHover))
+    .arg(str(spec.checkedPressed));
+}
+
+const QString& myDefaultPushButtonStyle()
+{
+    static const QString style = makeStyleFromButtonSpec({});
+    return style;
 }
