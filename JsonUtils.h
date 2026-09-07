@@ -1,5 +1,6 @@
 #pragma once
-#include "sv_qtcommon.h"
+#include "QtCommon.h"
+#include "StdFormattersForQt.h"
 
 QString getQJsonValueTypeName(const QJsonValue& value);
 
