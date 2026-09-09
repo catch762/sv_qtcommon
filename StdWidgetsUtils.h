@@ -69,7 +69,7 @@ inline QSlider* makeSliderForNormDouble(QWidget* parent = nullptr, double initia
 //  QDoubleSpinBox
 //******************
 
-inline QDoubleSpinBox* makeStandardSpinbox(QWidget* parent = nullptr, double min = -DBL_MAX, double max = DBL_MAX, double initialVal = 0)
+inline QDoubleSpinBox* makeStandardSpinbox(QWidget* parent = nullptr, double min = -DBL_MAX, double max = DBL_MAX, double initialVal = 0, int decimals = 3)
 {
     normalizeRange(min, max, initialVal);
 
@@ -78,7 +78,7 @@ inline QDoubleSpinBox* makeStandardSpinbox(QWidget* parent = nullptr, double min
     spinbox->setKeyboardTracking(false);
     spinbox->setButtonSymbols(QAbstractSpinBox::NoButtons);
 
-    spinbox->setDecimals(3);
+    spinbox->setDecimals(decimals);
     spinbox->setSingleStep(0.1);
 
     spinbox->setRange(min, max);
