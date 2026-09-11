@@ -380,7 +380,7 @@ inline double coord01ToPixelRange(int leftmostPixel, int rightmostPixel, double 
 {
     int actualPixelRange = rightmostPixel - leftmostPixel;
 
-    return 0.5 + double(actualPixelRange) * coord01;
+    return double(leftmostPixel) + 0.5 + double(actualPixelRange) * coord01;
 }
 
 inline QPointF pixCoordOfNdcCoord(QRect rect, glm::vec2 ndc11)

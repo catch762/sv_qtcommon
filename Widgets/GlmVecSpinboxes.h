@@ -84,8 +84,9 @@ class SpinboxesVec3 : public QWidget
 {
 	Q_OBJECT
 public:
-	using VecT = glm::vec3;
+	static constexpr int Size = 3; //just change this number and everything else will work
 
+	using VecT = glm::vec<Size, float, glm::qualifier::defaultp>;
 	SpinboxesVec3(VecT val = {}, QWidget* parent = nullptr) : QWidget(parent), helper(val, this)
 	{
 		helper.visitSpinboxes([this](QDoubleSpinBox* spin)
@@ -121,5 +122,5 @@ signals:
 	void valueChanged(VecT value);
 
 private:
-	SpinboxesHelper<3> helper;
+	SpinboxesHelper<Size> helper;
 };

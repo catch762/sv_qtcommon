@@ -64,6 +64,38 @@ inline QSlider* makeSliderForNormDouble(QWidget* parent = nullptr, double initia
     return slider;
 }
 
+//returns leftmost and rightmost pixel
+inline std::pair<int, int> sliderHorizontalHandleCenterRange(const QSlider* slider)
+{
+    QStyleOptionSlider opt;
+    opt.initFrom(slider);
+
+    opt.orientation = Qt::Horizontal;
+    opt.minimum = slider->minimum();
+    opt.maximum = slider->maximum();
+    opt.sliderPosition = slider->sliderPosition();
+    opt.upsideDown = slider->layoutDirection() == Qt::RightToLeft;
+
+    const QStyle* style = slider->style();
+
+    const QRect handle = style->subControlRect(
+        QStyle::CC_Slider,
+        &opt,
+        QStyle::SC_SliderHandle,
+        slider);
+
+    const int handleLength = handle.width();
+
+    // This is the same basic span used by QSlider/QStyle for horizontal sliders.
+    const int sliderMin = slider->rect().left();
+    const int sliderMax = slider->rect().right() - handleLength + 1;
+
+    //yes its not a typo, + both times
+    return {
+        sliderMin + handleLength / 2,
+        sliderMax + handleLength / 2
+    };
+}
 
 //******************
 //  QDoubleSpinBox
