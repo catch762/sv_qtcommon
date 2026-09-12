@@ -404,3 +404,36 @@ inline QColor mixColors(QColor a, QColor b, double ratio01)
 
     return res;
 }
+
+inline void drawCheckerboard(QPainter& painter, const QRect& rect, QColor a = Qt::white, QColor b = QColor(204,204,204), int squareSize = 8)
+{
+    if (squareSize <= 0) return;
+
+    painter.fillRect(rect, a);
+
+    painter.setPen(Qt::NoPen);
+    painter.setBrush(b);
+
+    // Calculate how many rows and columns fit the bounding box
+    int cols = (rect.width() + squareSize - 1) / squareSize;
+    int rows = (rect.height() + squareSize - 1) / squareSize;
+
+    // Loop through and draw the second color squares
+    for (int row = 0; row < rows; ++row) {
+        int top = rect.y() + (row * squareSize);
+
+        int startCol = (row % 2 == 0) ? 1 : 0;
+
+        for (int col = startCol; col < cols; col += 2) {
+            int left = rect.x() + (col * squareSize);
+
+            QRect cellRect(left, top, squareSize, squareSize);
+
+            QRect clippedRect = cellRect.intersected(rect);
+
+            if (!clippedRect.isEmpty()) {
+                painter.drawRect(clippedRect);
+            }
+        }
+    }
+}

@@ -31,5 +31,6 @@ SV_REGTYPENAME(QString);
 #include "Widgets/SliderAndSpinbox.h"
 #include "Widgets/GlmVecSpinboxes.h"
 #include "Widgets/QCustomPaintedSlider.h"
+#include "Widgets/ColorWidget.h"
 
 #include "Glm/GlmHelpers.h"

@@ -16,18 +16,18 @@ SliderAndSpinbox::SliderAndSpinbox(QWidget* parent, double min, double max, doub
 
 	//slave sets master value loudly
 	connect(slider, &QSlider::valueChanged, this, [this](int)
-		{
-			setSpinboxValue01(spinbox, getSliderValue01(slider));
-		});
+	{
+		setSpinboxValue01(spinbox, getSliderValue01(slider));
+	});
 
 	//master sets slave value silently
 	connect(spinbox, &QDoubleSpinBox::valueChanged, this, [this](double value)
-		{
-			QSignalBlocker block(slider);
-			setSliderValue01(slider, getSpinboxValue01(spinbox));
+	{
+		QSignalBlocker block(slider);
+		setSliderValue01(slider, getSpinboxValue01(spinbox));
 
-			emit valueChanged(value);
-		});
+		emit valueChanged(value);
+	});
 
 	if (sliderOnTheLeft)
 	{
