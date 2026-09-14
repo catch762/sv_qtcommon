@@ -95,17 +95,17 @@ public:
 
     static void defaultHandlePaintFunc(QCustomPaintedSlider* slider, QPainter& p, PaintInfo info)
     {
-        p.setPen(QPen(QColor(138,138,138), 1));
+        p.setPen(QPen(QColor(150, 150, 150), 1));
         p.setBrush(QColor(240, 240, 240));
 
         //3-pixel wide rect, including 1-pixel border. Exactly centered at handle position.
-        //I fucking love that code that draws it doesnt make any fucking sense
+        //I fucking love that code that draws it doesnt reference any of these numbers
 
         QRect handleRect = {
-            int(info.handleCenterX) - 2, //like, why -2?
-            0,                           //ok
-            2,                           //???
-            info.fullRect.height() - 1   //???
+            int(info.handleCenterX) - 2,
+            0,                           
+            2,                           
+            info.fullRect.height() - 1
         };
 
         p.drawRect(handleRect);

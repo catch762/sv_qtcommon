@@ -13,7 +13,7 @@ HSVAColorWidget::HSVAColorWidget(QColor initialColor, QWidget* parent) : QWidget
 
 		QCustomPaintedSlider::fillWithVerticalLines(p, info.controlRangeRect, [](double place01)
 		{
-			return QColor::fromHsvF(place01, 1.0, 1.0);
+			return safeFromHsvF(place01, 1.0, 1.0);
 		});
 	};
 
@@ -23,7 +23,9 @@ HSVAColorWidget::HSVAColorWidget(QColor initialColor, QWidget* parent) : QWidget
 
 		QCustomPaintedSlider::fillWithVerticalLines(p, info.controlRangeRect, [this](double place01)
 		{
-			return QColor::fromHsvF(color.hueF(), place01, color.valueF());
+			auto res = safeFromHsvF(color.hueF(), place01, color.valueF());
+
+			return res;
 		});
 	};
 
@@ -33,7 +35,7 @@ HSVAColorWidget::HSVAColorWidget(QColor initialColor, QWidget* parent) : QWidget
 
 		QCustomPaintedSlider::fillWithVerticalLines(p, info.controlRangeRect, [this](double place01)
 		{
-			return QColor::fromHsvF(color.hueF(), color.saturationF(), place01);
+			return safeFromHsvF(color.hueF(), color.saturationF(), place01);
 		});
 	};
 
@@ -45,31 +47,36 @@ HSVAColorWidget::HSVAColorWidget(QColor initialColor, QWidget* parent) : QWidget
 
 		QCustomPaintedSlider::fillWithVerticalLines(p, info.controlRangeRect, [this](double place01)
 		{
-			return QColor::fromHsvF(color.hueF(), color.saturationF(), color.valueF(), place01);
+			return safeFromHsvF(color.hueF(), color.saturationF(), color.valueF(), place01);
 		});
 	};
 
 	hue = makeCompAndAddToLayout("H", hueBackgroundPaintFunc, [this](double hue01)
 	{
-		setColor(QColor::fromHsvF(hue01, color.saturationF(), color.valueF(), color.alphaF()));
+		setColor(safeFromHsvF(hue01, color.saturationF(), color.valueF(), color.alphaF()));
 	});
 
 	sat = makeCompAndAddToLayout("S", satBackgroundPaintFunc, [this](double sat01)
 	{
-		setColor(QColor::fromHsvF(color.hueF(), sat01, color.valueF(), color.alphaF()));
+		setColor(safeFromHsvF(color.hueF(), sat01, color.valueF(), color.alphaF()));
 	});
 
 	value = makeCompAndAddToLayout("V", valBackgroundPaintFunc, [this](double val01)
 	{
-		setColor(QColor::fromHsvF(color.hueF(), color.saturationF(), val01, color.alphaF()));
+		setColor(safeFromHsvF(color.hueF(), color.saturationF(), val01, color.alphaF()));
 	});
 
 	alpha = makeCompAndAddToLayout("A", alphaBackgroundPaintFunc, [this](double alpha01)
 	{
-		setColor(QColor::fromHsvF(color.hueF(), color.saturationF(), color.valueF(), alpha01));
+		setColor(safeFromHsvF(color.hueF(), color.saturationF(), color.valueF(), alpha01));
 	});
 
 	setColor(initialColor);
+}
+
+QColor HSVAColorWidget::getColor() const
+{
+	return color;
 }
 
 void HSVAColorWidget::setColor(QColor newColor)
@@ -85,6 +92,8 @@ void HSVAColorWidget::setColor(QColor newColor)
 	sat.setValueSilently	(color.saturationF());
 	value.setValueSilently	(color.valueF());
 	alpha.setValueSilently	(color.alphaF());
+
+	emit colorChanged(color);
 
 	update();
 }

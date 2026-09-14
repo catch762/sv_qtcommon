@@ -7,7 +7,12 @@ class HSVAColorWidget : public QWidget
 public:
 	HSVAColorWidget(QColor initialColor, QWidget* parent = nullptr);
 
+	QColor getColor() const;
 	void setColor(QColor newColor);
+
+
+signals:
+	void colorChanged(QColor color);
 
 private:
 	struct Component

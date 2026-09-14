@@ -437,3 +437,28 @@ inline void drawCheckerboard(QPainter& painter, const QRect& rect, QColor a = Qt
         }
     }
 }
+
+inline glm::vec4 colorToVec(QColor c)
+{
+    return { c.redF(), c.greenF(), c.blueF(), c.alphaF() };
+}
+inline QColor colorFromVec(glm::vec4 vec)
+{
+    vec = glm::clamp(vec, { 0.0, 0.0, 0.0, 0.0 }, { 1.0, 1.0, 1.0, 1.0 });
+    QColor c;
+    c.setRedF   (vec.x);
+    c.setGreenF (vec.y);
+    c.setBlueF  (vec.z);
+    c.setAlphaF (vec.w);
+    return c;
+}
+
+//always between 0 and 1. Cause default hueF() will return -1 for grayscale colors
+inline float safeHueF(QColor c)
+{
+    return std::clamp(c.hueF(), 0.0f, 1.0f);
+}
+inline QColor safeFromHsvF(float h, float s, float v, float a = 1.0f)
+{
+    return QColor::fromHsvF(std::clamp(h, 0.0f, 1.0f), s, v, a);
+}
