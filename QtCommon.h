@@ -28,6 +28,7 @@
 SV_DECL_OPT(QString)
 SV_DECL_OPT(QJsonArray)
 SV_DECL_OPT(QByteArray)
+SV_DECL_ERR(QByteArray)
 SV_DECL_OPT(QJsonObject)
 SV_DECL_OPT(QJsonValue)
 SV_DECL_OPT(QVariant)
