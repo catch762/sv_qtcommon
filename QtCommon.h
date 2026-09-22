@@ -317,7 +317,7 @@ inline void extractAllWidgetsFromLayoutWithNoSublayouts(QLayout *layout, QList<Q
 }
 
 //Addition to logger
-#define SV_MSGBOX_LOG(text)     {SV_LOG(text);   QMessageBox::information(nullptr, "Information", QString::fromStdString(text));}
+#define SV_MSGBOX_LOG(text)     {SV_INFO(text);   QMessageBox::information(nullptr, "Information", QString::fromStdString(text));}
 #define SV_MSGBOX_WARN(text)    {SV_WARN(text);  QMessageBox::warning(nullptr, "Warning", QString::fromStdString(text));}
 #define SV_MSGBOX_ERROR(text)   {SV_ERROR(text); QMessageBox::critical(nullptr, "Error", QString::fromStdString(text));}
 

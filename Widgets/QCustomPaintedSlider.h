@@ -81,7 +81,7 @@ public:
 
     static void exampleGrayscaleBackgroundPaintFunc(QCustomPaintedSlider* slider, QPainter& p, PaintInfo info)
     {
-        SV_LOG("exampleGrayscaleBackgroundPaintFunc() called;");
+        SV_INFO("exampleGrayscaleBackgroundPaintFunc() called;");
 
         QCustomPaintedSlider::fillStdBackground(slider, p, info);
 
