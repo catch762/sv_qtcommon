@@ -19,6 +19,7 @@ SV_REGTYPENAME(QString);
 
 #include "StdFormattersForQt.h"
 #include "QtCommon.h"
+#include "TypingAndVariantUtils.h"
 #include "JsonUtils.h"
 #include "LayoutUtils.h"
 #include "ParseUtils.h"
@@ -32,5 +33,6 @@ SV_REGTYPENAME(QString);
 #include "Widgets/GlmVecSpinboxes.h"
 #include "Widgets/QCustomPaintedSlider.h"
 #include "Widgets/ColorWidget.h"
+#include "Widgets/DebugWidgets.h"
 
 #include "Glm/GlmHelpers.h"

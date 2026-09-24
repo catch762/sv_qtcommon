@@ -1,6 +1,10 @@
 #pragma once
 #include "sv_qtcommon.h"
 
+void printLayoutContents(QLayout* layout);
+
+void initLayoutSpacing(QLayout* layout, int margins = 0, int spacing = 0);
+
 //if theres a nested layout, it gets deleted, but its contents are not.
 void deleteLastNItemsInLayout(QLayout* layout, int itemsToDelete);
 
@@ -20,3 +24,5 @@ void iterateImmediateWidgets(QLayout* layout, const WidgetIterateFunc& iterateFu
 		}
 	}
 }
+
+void extractAllWidgetsFromLayoutWithNoSublayouts(QLayout* layout, QList<QWidget*>* outWidgets = nullptr);
