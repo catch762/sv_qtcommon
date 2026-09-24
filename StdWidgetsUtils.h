@@ -1,16 +1,34 @@
 #pragma once
 #include "QtCommon.h"
+#include <QMetaEnum>
 #include "StdFormattersForQt.h"
 
 inline std::string widgetInfo(QWidget* w)
 {
-    return std::format("[{}]: name='{}', w=[min {}; cur {}; max {}], h=[min {}; cur {}; max {}], sizeHint[{}; {}], minSizeHint[{}; {}]",
+    return std::format(
+        "[{}]: name='{}', size=[{}; {}], minSize=[{}; {}], maxSize=[{}; {}], "
+        "sizeHint[{}; {}], minSizeHint[{}; {}], "
+        "sizePolicy[hor {}; ver {}], stretch[hor {}; ver {}]",
+
         w->metaObject()->className(),
         w->objectName(),
-        w->minimumWidth(), w->width(), w->maximumWidth(),
-        w->minimumHeight(), w->height(), w->maximumHeight(),
-        w->sizeHint().width(), w->sizeHint().height(),
-        w->minimumSizeHint().width(), w->minimumSizeHint().height());
+        w->width(), 
+        w->height(),
+        w->minimumWidth(), 
+        w->minimumHeight(),
+        w->maximumWidth(), 
+        w->maximumHeight(),
+
+        w->sizeHint().width(), 
+        w->sizeHint().height(),
+        w->minimumSizeHint().width(), 
+        w->minimumSizeHint().height(),
+
+        QMetaEnum::fromType<QSizePolicy::Policy>().valueToKey(w->sizePolicy().horizontalPolicy()),
+        QMetaEnum::fromType<QSizePolicy::Policy>().valueToKey(w->sizePolicy().verticalPolicy()),
+        w->sizePolicy().horizontalStretch(), 
+        w->sizePolicy().verticalStretch()
+    );
 }
 
 //************
